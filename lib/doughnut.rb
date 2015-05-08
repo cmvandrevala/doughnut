@@ -1,5 +1,5 @@
 require "doughnut/version"
+require "doughnut/capm"
 
 module Doughnut
-  # Your code goes here...
 end
