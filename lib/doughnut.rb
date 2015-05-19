@@ -1,5 +1,6 @@
 require "doughnut/version"
-require "doughnut/capm"
+require "doughnut/portfolio_evaluation"
+require "doughnut/retirement_calculator"
 
 module Doughnut
 end

@@ -2,7 +2,7 @@ require "spec_helper"
 
 module Doughnut
 
-  describe CAPM do
+  describe PortfolioEvaluation do
 
     describe "risk free rate" do
       it "retrieves the risk free interest rate from Yahoo Finance"
