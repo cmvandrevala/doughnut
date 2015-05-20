@@ -32,6 +32,10 @@ module Doughnut
           expect(@retire.monthly_expense).to eq 2500
         end
 
+        it "returns average monthly income of $3700" do
+          expect(@retire.monthly_income).to eq 3700
+        end
+
       end
 
       context "changing parameters" do
@@ -59,6 +63,11 @@ module Doughnut
         it "updates the average monthly expenses" do
           @retire.monthly_expense = 52.55
           expect(@retire.monthly_expense).to eq 52.55
+        end
+
+        it "updates the average monthly income" do
+          @retire.monthly_income = 521.5
+          expect(@retire.monthly_income).to eq 521.5
         end
 
       end
@@ -151,7 +160,90 @@ module Doughnut
 
     end
 
-    describe "predicted portfolio growth" do
+    describe "predicted income" do
+
+      context "no income growth" do
+
+        before(:each) do
+          @retire.income_growth_rate = 0
+        end
+
+        it "returns no income if the death date has passed" do
+          allow(Date).to receive(:today) { Date.new(2075,1,1) }
+          expect(@retire.income).to eq []
+        end
+
+        it "returns one income if there is only one month to the death date" do
+          allow(Date).to receive(:today) { Date.new(2067,6,19) }
+          lower_bound = 0.99696173*3700
+          upper_bound = 0.99696174*3700
+          expect(@retire.income.first[:date]).to eq Date.new(2067,6,30)
+          expect(@retire.income.first[:expense]).to be > lower_bound
+          expect(@retire.income.first[:expense]).to be < upper_bound
+        end
+
+        it "returns two incomes if there are two months to the death date" do
+          allow(Date).to receive(:today) { Date.new(2067,5,22) }
+          lower_bound_one = 0.997513455*3700
+          upper_bound_one = 0.997513456*3700
+          lower_bound_two = 0.989269542*3700
+          upper_bound_two = 0.989269543*3700
+          expect(@retire.income.first[:date]).to eq Date.new(2067,5,31)
+          expect(@retire.income.last[:date]).to eq Date.new(2067,6,30)
+          expect(@retire.income.first[:expense]).to be > lower_bound_one
+          expect(@retire.income.first[:expense]).to be < upper_bound_one
+          expect(@retire.income.last[:expense]).to be > lower_bound_two
+          expect(@retire.income.last[:expense]).to be < upper_bound_two
+        end
+
+        it "returns many incomes if there are many months up to the death date" do
+          allow(Date).to receive(:today) { Date.new(2060,1,2) }
+          expect(@retire.income.length).to eq 90
+        end
+
+      end
+
+      context "non-zero income growth" do
+
+        before(:each) do
+          @retire.income_growth_rate = 0.03
+        end
+
+        it "returns no incomes if the death date has passed" do
+          allow(Date).to receive(:today) { Date.new(2088,1,1) }
+          expect(@retire.income).to eq []
+        end
+
+        it "returns one income if there is only one month to the death date" do
+          allow(Date).to receive(:today) { Date.new(2067,6,3) }
+          lower_bound = 0.99479187*3700
+          upper_bound = 0.99479188*3700
+          expect(@retire.income.first[:date]).to eq Date.new(2067,6,30)
+          expect(@retire.income.first[:expense]).to be > lower_bound
+          expect(@retire.income.first[:expense]).to be < upper_bound
+        end
+
+        it "returns two incomes if there are two months to the death date" do
+          allow(Date).to receive(:today) { Date.new(2067,5,25) }
+          lower_bound_one = 0.99884028*3700
+          upper_bound_one = 0.99884029*3700
+          lower_bound_two = 0.99306187*3700
+          upper_bound_two = 0.99306188*3700
+          expect(@retire.income.first[:date]).to eq Date.new(2067,5,31)
+          expect(@retire.income.last[:date]).to eq Date.new(2067,6,30)
+          expect(@retire.income.first[:expense]).to be > lower_bound_one
+          expect(@retire.income.first[:expense]).to be < upper_bound_one
+          expect(@retire.income.last[:expense]).to be > lower_bound_two
+          expect(@retire.income.last[:expense]).to be < upper_bound_two
+        end
+
+        it "returns many incomes if there are many months up to the death date" do
+          allow(Date).to receive(:today) { Date.new(2060,1,2) }
+          expect(@retire.expenses.length).to eq 90
+        end
+
+      end
+
     end
 
   end
