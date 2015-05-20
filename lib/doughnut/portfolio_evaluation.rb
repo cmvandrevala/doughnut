@@ -1,6 +1,6 @@
 module Doughnut
 
-  class CAPM
+  class PortfolioEvaluation
   end
 
 end
