@@ -18,7 +18,7 @@ module Doughnut
     def expenses
       output = []
       (Date.today..@death_date).each do |mydate|
-        output << calculated_expense(mydate) if is_last_day(mydate)
+        output << calculate_present_values(mydate, "expense") if is_last_day(mydate)
       end
       output
     end
@@ -26,7 +26,27 @@ module Doughnut
     def income
       output = []
       (Date.today..@death_date).each do |mydate|
-        output << calculated_income(mydate) if is_last_day(mydate)
+        output << calculate_present_values(mydate, "income") if is_last_day(mydate)
+      end
+      output
+    end
+
+    def retirement_date
+      return Date.today if @monthly_expense == 0
+      return @death_date if @monthly_income < @monthly_expense
+      e = total_expenses
+      c = 0
+      income.each do |h|
+        date = h[:date]
+        c = c + h[:expense]
+        return date if c >= e
+      end
+    end
+
+    def total_expenses
+      output = 0
+      expenses.each do |h|
+        output = output + h[:expense]
       end
       output
     end
@@ -37,12 +57,12 @@ module Doughnut
       mydate.month != mydate.next_day.month
     end
 
-    def calculated_expense(mydate)
-      { date: mydate, expense: @monthly_expense*discount_factor(mydate, "expense") }
-    end
-
-    def calculated_income(mydate)
-      { date: mydate, expense: @monthly_income*discount_factor(mydate, "income") }
+    def calculate_present_values(mydate, type)
+      if type == "expense"
+        return { date: mydate, expense: @monthly_expense*discount_factor(mydate, "expense") }
+      else
+        return { date: mydate, expense: @monthly_income*discount_factor(mydate, "income") }
+      end
     end
 
     def discount_factor(mydate, type)

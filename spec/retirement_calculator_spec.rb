@@ -246,6 +246,55 @@ module Doughnut
 
     end
 
+    describe "retirement date" do
+
+      it "returns today's date if there are no monthly expenses" do
+        @retire.monthly_expense = 0
+        expect(@retire.retirement_date).to eq Date.today
+      end
+
+      it "returns the death date if there is no monthly income" do
+        @retire.monthly_income = 0
+        expect(@retire.retirement_date).to eq Date.new(2067,7,19)
+      end
+
+      it "returns the death date if monthly expenses are greater than monthly income" do
+        @retire.monthly_income = 0
+        @retire.monthly_expense = 1
+        expect(@retire.retirement_date).to eq Date.new(2067,7,19)
+      end
+
+      it "returns a date between the current date and the death date" do
+        @retire.monthly_income = 2
+        @retire.monthly_expense = 1
+        expect(@retire.retirement_date).to be > Date.today
+        expect(@retire.retirement_date).to be < Date.new(2067,7,19)
+      end
+
+    end
+
+    describe "total expenses" do
+
+      it "calculates the total for one expense" do
+        @retire.inflation_rate = 0
+        allow(Date).to receive(:today) { Date.new(2067,6,19) }
+        lower_bound = 0.99696173*2500
+        upper_bound = 0.99696174*2500
+        expect(@retire.total_expenses).to be > lower_bound
+        expect(@retire.total_expenses).to be < upper_bound
+      end
+
+      it "calculates the total for two expenses" do
+        @retire.inflation_rate = 0
+        allow(Date).to receive(:today) { Date.new(2067,5,22) }
+        lower_bound = 0.997513455*2500 + 0.989269542*2500
+        upper_bound = 0.997513456*2500 + 0.989269543*2500
+        expect(@retire.total_expenses).to be > lower_bound
+        expect(@retire.total_expenses).to be < upper_bound
+      end
+
+    end
+
   end
 
 end
