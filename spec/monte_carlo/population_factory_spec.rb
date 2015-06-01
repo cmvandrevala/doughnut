@@ -2,14 +2,14 @@ require "spec_helper"
 
 module Doughnut
 
-  describe Population do
+  describe PopulationFactory do
 
     describe "building a population of random genomes" do
 
       context "one input" do
 
         before(:each) do
-          @population = Population.new( [{name: "X", avg_return: 1, standard_deviation: 5}] ).build_random_population
+          @population = PopulationFactory.new( [{name: "X", avg_return: 1, standard_deviation: 5}] ).build_random_population
         end
 
         it "returns ten genomes" do
@@ -59,7 +59,7 @@ module Doughnut
       context "multiple inputs" do
 
         before(:each) do
-          @population = Population.new( [{name: "X", avg_return: 1, standard_deviation: 5},{name: "Y", avg_return: 3, standard_deviation: 7}] ).build_random_population
+          @population = PopulationFactory.new( [{name: "X", avg_return: 1, standard_deviation: 5},{name: "Y", avg_return: 3, standard_deviation: 7}] ).build_random_population
         end
 
         it "returns ten genomes" do

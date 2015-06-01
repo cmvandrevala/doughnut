@@ -1,4 +1,5 @@
-require "doughnut/monte_carlo/population"
+require "doughnut/monte_carlo/population_factory"
+require "doughnut/monte_carlo/population_tester"
 require "doughnut/monte_carlo/predicted_return"
 
 require "doughnut/retirement_calculator/expenses"

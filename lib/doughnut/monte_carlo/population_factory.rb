@@ -1,6 +1,6 @@
 module Doughnut
 
-  class Population
+  class PopulationFactory
 
     def initialize(list_of_assets)
       @num_genomes = 10

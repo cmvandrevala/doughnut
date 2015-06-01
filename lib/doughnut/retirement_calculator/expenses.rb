@@ -9,14 +9,6 @@ module Doughnut
       @inflation_rate = 0.0322
     end
 
-    def future_expenses(death_date, discount_rate)
-      output = []
-      (Date.today..death_date).each do |mydate|
-        output << present_value(mydate, discount_rate) if is_last_day(mydate)
-      end
-      output
-    end
-
     def total_expenses(death_date, discount_rate)
       output = 0
       future_expenses(death_date, discount_rate).each do |h|
@@ -25,9 +17,17 @@ module Doughnut
       output
     end
 
+    def future_expenses(death_date, discount_rate)
+      output = []
+      (Date.today..death_date).each do |mydate|
+        output << present_value(mydate, discount_rate) if is_last_day_of_month(mydate)
+      end
+      output
+    end
+
     private
 
-    def is_last_day(mydate)
+    def is_last_day_of_month(mydate)
       mydate.month != mydate.next_day.month
     end
 
