@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Doughnut::VERSION
   spec.authors       = ["Cyrus Vandrevala"]
   spec.email         = ["cyrus.vandrevala@gmail.com"]
-  spec.summary       = %q{Generate statistics for a personal portfolio.}
-  spec.description   = ""
+  spec.summary       = %q{This is some exploratory code for a retirement calculator and monte carlo simulation in finance.}
+  spec.description   = "This is some exploratory code for a retirement calculator and monte carlo simulation in finance. This is not guaranteed to be accurate! Use it at your own risk!"
   spec.homepage      = ""
   spec.license       = "MIT"
 

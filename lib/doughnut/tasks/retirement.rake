@@ -1,6 +1,6 @@
-require "doughnut/retirement_calculator/expenses"
-require "doughnut/retirement_calculator/income"
-require "doughnut/retirement_calculator/retirement_calculator"
+require "expenses"
+require "retirement_calculator/income"
+require "retirement_calculator/retirement_calculator"
 
 task :calculate_retirement do
   e = Expenses.new
